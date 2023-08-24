@@ -36,16 +36,10 @@ def create_panel(dolphie: Dolphie) -> Table:
         style=table_line_color,
     )
 
-    if dolphie.worker_job_time < 1:
-        refresh_latency = 0
-    else:
-        refresh_latency = round(dolphie.worker_job_time - dolphie.refresh_interval, 2)
+    refresh_latency = 0 if dolphie.worker_job_time < 1 else round(dolphie.worker_job_time - dolphie.refresh_interval, 2)
 
     if global_variables["read_only"] == "ON":
-        if not dolphie.replication_status:
-            global_variables["read_only"] = "YES ([indian_red]SHOULD BE NO?[/indian_red])"
-        else:
-            global_variables["read_only"] = "YES"
+        global_variables["read_only"] = "YES ([indian_red]SHOULD BE NO?[/indian_red])" if not dolphie.replication_status else "YES"
     elif global_variables["read_only"] == "OFF":
         global_variables["read_only"] = "NO"
 
